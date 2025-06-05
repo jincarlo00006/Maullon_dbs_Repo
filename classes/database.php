@@ -111,6 +111,13 @@ class database {
         $con = $this->opencon();
         return $con->query("SELECT * FROM students")->fetchAll();
     }
+
+    function getStudentByID($student_id) {
+        $con = $this->opencon();
+        $stmt = $con->prepare("SELECT * FROM students WHERE student_id = ?");
+        $stmt->execute([$student_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
  
 }
