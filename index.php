@@ -136,14 +136,31 @@
         </tr>
       </thead>
       <tbody>
+        <?php
+        // fetch courses from database
+        $courses = $con->getCourses();
+        foreach($courses as $course){
+
+        ?>
         <tr>
-          <td>1</td>
-          <td>BS Information Technology</td>
+          <td><?php echo $course['course_id'] ?></td>
+          <td><?php echo $course['course_name'] ?></td>
+
           <td>
-            <button class="btn btn-sm btn-warning">Edit</button>
+            <div class="btn-group" role="group"> 
+              <form action="update_course.php" method="POST">
+                <input type="hidden" name="course_id" value="<?php echo $course ['course_id'] ?>">
+                <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+
+              </form>
+            </div>
             <button class="btn btn-sm btn-danger">Delete</button>
           </td>
         </tr>
+        <?php
+        }
+        ?>
+
       </tbody>
     </table>
 

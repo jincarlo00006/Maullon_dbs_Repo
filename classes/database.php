@@ -134,6 +134,34 @@ class database {
             return false;
         }
     }
+
+    function getCourses(){
+        $con = $this->opencon();
+        return $con->query("SELECT * FROM courses")->fetchAll();
+    }
+
+    function getCourseByID($course_id) {
+        $con = $this->opencon();
+        $stmt = $con->prepare("SELECT * FROM courses WHERE course_id = ?");
+        $stmt->execute([$course_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function updateCourse($course_id, $course_name) {
+        try {
+            $con = $this->opencon();
+            $con->beginTransaction();
+            $query = $con->prepare("UPDATE courses SET course_name=? WHERE course_id=?");
+            $query->execute([$course_name, $course_id]);
+ 
+            $con->commit();
+            return true;
+
+        } catch (PDOException $e) {
+            $con->rollBack();
+            return false;
+        }
+    }
     
  
 }
