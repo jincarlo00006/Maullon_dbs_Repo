@@ -118,7 +118,22 @@ class database {
         $stmt->execute([$student_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    function updateStudent($student_id, $first_name, $last_name, $email) {
+        try {
+            $con = $this->opencon();
+            $con->beginTransaction();
+            $query = $con->prepare("UPDATE students SET student_FN=?, student_LN=?,  student_email=? WHERE student_id=?");
+            $query->execute([$first_name, $last_name, $email, $student_id]);
+ 
+            $con->commit();
+            return true;
+
+        } catch (PDOException $e) {
+            $con->rollBack();
+            return false;
+        }
+    }
     
  
 }
-
